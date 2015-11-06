@@ -2,23 +2,23 @@
 //the stack will be implemented. 
 #include<stdio.h>
 
-void display(char **ar,int m,int n)         //To display the grid, all at once.
+void display(char ar[5][7])         //To display the grid, all at once.
 {
   int i=0,j=0;
-  while(i<m)
+  while(i<5)
     {
       j=0;                           
-      while(j<n)
+      while(j<7)
 	{
-	  printf("%d |",ar[i][j]);
+	  printf("%c|",ar[i][j]);
 	  j++;
 	}
-      printf("__________");
+      printf("\n_______________\n");
       i++;
     }
   j=0;
-  while(j<i)
-    printf("%d  ",j);
+  while(j<7)
+    printf("%d  ",++j);
 }
 
 void instr()          //To display the instructions to the user
@@ -34,11 +34,12 @@ int main()
   scanf("%c",&ch);
   if(ch=='y'||ch=='Y')
     {
-      printf("\nEnter the number of rows and coloumns of the stack(both can be max 5)");
-      scanf("%d%d",&m,&n);
-      if(m<6&&n<6)
+      display(ar[5][7]);
+      if(!checkwin(ar[5][7]))
 	{
-	  display();
+	  while(!checkwin(ar[5][7]))
+	    
 	}
     }
+    
 }
