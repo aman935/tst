@@ -1,22 +1,44 @@
 #include<stdio.h>
-
 int checkwin(char game[5][7]);
-void enter(char a[5][7],int p,int *ct);
+int enter(char a[5][7],int p,int *ct);
 void display(char ar[5][7]);
 void init(char ar[5][7],int *ct);
 
+void change_col(int p)
+{
+  (p==1)?printf("\033[22;34m"):printf("\033[22;32m");
+}
+
+void gotoxy(int x,int y)
+ {
+ printf("%c[%d;%df",0x1B,y,x);
+ }            
+
+void logo()
+{
+  gotoxy(25,3);
+  printf("#####    #    ###");
+  gotoxy(25,4);
+  printf("  #     #   # ");
+  gotoxy(25,5);
+  printf("  #     #    ###");
+}
 int main()
 {
-  int p1=0,p2=0,t=1,state=2,p=1,ct[7];
-  char a[5][7];
+  int p1=0,p2=0,t=1,state=2,p=1,ct[7],k=0;
+  char a[5][7],ch='Y';
   do
     {
       init(a,ct);
       p=1;
       while(checkwin(a)==2)
 	{
+	  printf("\ec");
+	  change_col(p);
 	  display(a);
-	  enter(a,p,ct);
+	  logo();
+	  k=enter(a,p,ct);
+	  if(k)
 	  p=(p==1)?2:1;              //Changes p to let both the players play
 	}
       switch(checkwin(a))
@@ -31,11 +53,23 @@ int main()
 	default:p1++;
 	  break;
 	}
-      display(a);
-      printf("\n----------------Scores----------------\nP1:  %d    P2:   %d    \n",p1,p2);
-      printf("Play one more game?(1/0)");
-      scanf("%d",&t);
-    }while(t==1);
+      do
+	{
+	  printf("\ec");
+	  display(a);
+	  logo();
+	  gotoxy(28,8);
+	  printf("----------------Scores----------------");
+	  gotoxy(28,9);
+	  printf("P1:  %d    P2:   %d    ",p1,p2);      
+	  gotoxy(28,10);
+	  printf("Play one more game?(y/n)");
+	  scanf("%c",&ch);
+	}while(!(ch=='Y'||ch=='y'||ch=='1'||ch=='N'||ch=='n'||ch=='0'));
+	
+      if(ch=='N'||ch=='n'||ch=='0')
+	printf("\ec");
+    }while(ch=='Y'||ch=='y'||ch=='1');
   return 0;
 }
 //Functions : checkwin,display,enter,init
@@ -243,7 +277,7 @@ int checkwin(char game[5][7])
 }
 
 
-void enter(char a[5][7],int p,int *ct)  //c->coloumn of the stack, ct->coloumn tag,
+int enter(char a[5][7],int p,int *ct)  //c->coloumn of the stack, ct->coloumn tag,
 {                                       //the position till which array is empty
   char ch;
   int c=0;
@@ -251,11 +285,18 @@ void enter(char a[5][7],int p,int *ct)  //c->coloumn of the stack, ct->coloumn t
     ch='x';
   else
     ch='o';
+  gotoxy(28,11);
   printf("Player:%d Enter the coloumn number! ",p);
   scanf("%d",&c);
   if(c<8&&c>0)
-  a[ct[c-1]][c-1]=ch;
-  ct[c-1]++;
+    {
+      if(ct[c-1]>=5)
+	return 0;
+      a[ct[c-1]][c-1]=ch;
+      ct[c-1]++;
+      return 1;
+    }
+  else return 0;
 }
 
 void init(char ar[5][7],int *ct)  //To initialize the grid with spaces
@@ -288,7 +329,10 @@ void display(char ar[5][7])         //To display the grid, all at once.
 	  if(j!=7)
 	    printf("|");
 	}
-      printf("\n_______________\n");
+      if(i!=5)
+	printf("\n---------------------\n");
+      else 
+	printf("\n---------------------\n");
     }
   j=0;
   while(j<7)
