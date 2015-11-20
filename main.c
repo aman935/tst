@@ -16,12 +16,19 @@ void gotoxy(int x,int y)
 
 void logo()
 {
-  gotoxy(25,3);
-  printf("#####    #    ###");
-  gotoxy(25,4);
-  printf("  #     #   # ");
-  gotoxy(25,5);
-  printf("  #     #    ###");
+  gotoxy(24,1);
+  printf("#####   #    ###        ##### #####   #     ###   #  #"); 
+  gotoxy(24,2);
+  printf("  #     #   #           ###     #    ###   #      ##"); 
+  gotoxy(24,3);
+  printf("  #     #    ###      #####     #   #   #   ###   #  #"); 
+  gotoxy(30,5);
+  printf("   #####  ####  ### ");        
+  gotoxy(30,6);
+  printf("     #    #  #  ##"); 
+  gotoxy(30,7);
+  printf("     #    ####  ###");
+  
 }
 int main()
 {
