@@ -4,10 +4,10 @@ int enter(char a[5][7],int p,int *ct);
 void display(char ar[5][7]);
 void init(char ar[5][7],int *ct);
 
-void change_col(int p)
-{
-  (p==1)?printf("\033[22;34m"):printf("\033[22;32m");
-}
+// void change_col(int p)
+// {
+//   (p==1)?printf("\033[22;34m"):printf("\033[22;32m");
+// }
 
 void gotoxy(int x,int y)
  {
@@ -41,7 +41,7 @@ int main()
       while(checkwin(a)==2)
 	{
 	  printf("\ec");
-	  change_col(p);
+	  // change_col(p);
 	  display(a);
 	  logo();
 	  k=enter(a,p,ct);
@@ -295,7 +295,7 @@ int enter(char a[5][7],int p,int *ct)  //c->coloumn of the stack, ct->coloumn ta
   gotoxy(28,11);
   printf("Player:%d Enter the coloumn number! ",p);
   scanf("%d",&c);
-  if(c<8&&c>0)
+  if((int)c<8&&(int)c>0)
     {
       if(ct[c-1]>=5)
 	return 0;
